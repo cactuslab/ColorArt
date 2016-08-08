@@ -22,7 +22,7 @@ static inline CGFloat* LBGradientLocationsForColors(NSArray* colors) {
 
 static inline NSArray* LBGradientArrayFromLocations(CGFloat* locations, NSUInteger count) {
     NSMutableArray* locationArray = [NSMutableArray array];
-    for (int i = count; i >= 0; i--) {
+    for (NSInteger i = (NSInteger)count; i >= 0; i--) {
         [locationArray addObject:[NSNumber numberWithFloat:locations[i]]];
     }
     return locationArray;
