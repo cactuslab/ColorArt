@@ -6,7 +6,8 @@ Pod::Spec.new do |s|
   s.license      = 'CUSTOM'
   s.authors      = { "Fred Leitz" => "fred.leitz@gmail.com", "Aaron Brethorst" => "", "Wade Cosgrove" => "" }
   s.source       = { :git => "https://github.com/fleitz/ColorArt.git", :tag => "v0.1.1" }
-  s.platform     = :ios, '5.0'
+  s.ios.deployment_target = '5.0'
+  s.tvos.deployment_target = '9.0'
   s.source_files = 'ColorArt/Classes', 'ColorArt/Classes/**/*.{h,m}'
   s.frameworks = 'UIKit', 'Foundation', 'CoreGraphics', 'QuartzCore'
   s.requires_arc = true
