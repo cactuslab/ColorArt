@@ -64,6 +64,8 @@
 {
     UIImage* image = [info objectForKey:UIImagePickerControllerOriginalImage];
     [self colorizeForImage:image];
+    
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 
