@@ -17,19 +17,27 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
+typedef NS_ENUM(NSInteger, ColorDetectionLevel) {
+    ColorDetectionLevelStandard,
+    ColorDetectionLevelHigh
+};
+
 @interface SLColorArt : NSObject
 @property(strong, nonatomic, readonly) UIColor *backgroundColor;
 @property(strong, nonatomic, readonly) UIColor *primaryColor;
 @property(strong, nonatomic, readonly) UIColor *secondaryColor;
 @property(strong, nonatomic, readonly) UIColor *detailColor;
 @property(nonatomic, readonly) NSInteger randomColorThreshold; // Default to 2
+@property(nonatomic, readonly) ColorDetectionLevel detectionLevel;
 
 - (id)initWithImage:(UIImage*)image;
-- (id)initWithImage:(UIImage*)image threshold:(NSInteger)threshold;
+- (id)initWithImage:(UIImage*)image threshold:(NSInteger)threshold detectionLevel:(ColorDetectionLevel)level;
 
 + (void)processImage:(UIImage *)image
         scaledToSize:(CGSize)scaleSize
            threshold:(NSInteger)threshold
+      detectionLevel:(ColorDetectionLevel)level
           onComplete:(void (^)(SLColorArt *colorArt))completeBlock;
 
 @end

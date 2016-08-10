@@ -50,26 +50,28 @@
 @property(nonatomic,readwrite,strong) UIColor *secondaryColor;
 @property(nonatomic,readwrite,strong) UIColor *detailColor;
 @property(nonatomic,readwrite) NSInteger randomColorThreshold;
+@property(nonatomic,readwrite) ColorDetectionLevel detectionLevel;
 @end
 
 @implementation SLColorArt
 
 - (id)initWithImage:(UIImage*)image
 {
-    self = [self initWithImage:image threshold:2];
+    self = [self initWithImage:image threshold:2 detectionLevel:ColorDetectionLevelStandard];
     if (self) {
 
     }
     return self;
 }
 
-- (id)initWithImage:(UIImage*)image threshold:(NSInteger)threshold;
+- (id)initWithImage:(UIImage*)image threshold:(NSInteger)threshold detectionLevel:(ColorDetectionLevel)level
 {
     self = [super init];
 
     if (self)
     {
         self.randomColorThreshold = threshold;
+        self.detectionLevel = level;
         self.image = image;
         [self _processImage];
     }
@@ -77,16 +79,28 @@
     return self;
 }
 
++ (NSUInteger)pixelRangeForColorDetectionLevel:(ColorDetectionLevel)detectionLevel
+{
+    switch (detectionLevel) {
+        case ColorDetectionLevelStandard:
+            return 8;
+        case ColorDetectionLevelHigh:
+            return 32;
+    }
+}
+
 
 + (void)processImage:(UIImage *)image
         scaledToSize:(CGSize)scaleSize
            threshold:(NSInteger)threshold
-          onComplete:(void (^)(SLColorArt *colorArt))completeBlock;
+      detectionLevel:(ColorDetectionLevel)level
+          onComplete:(void (^)(SLColorArt *colorArt))completeBlock
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         UIImage *scaledImage = [image scaledToSize:scaleSize];
         SLColorArt *colorArt = [[SLColorArt alloc] initWithImage:scaledImage
-                                                       threshold:threshold];
+                                                       threshold:threshold
+                                                  detectionLevel:level];
         dispatch_async(dispatch_get_main_queue(), ^{
             completeBlock(colorArt);
         });
@@ -212,7 +226,7 @@ typedef struct RGBAPixel
 {
 	CGImageRef imageRep = image.CGImage;
     
-    NSUInteger pixelRange = 8;
+    NSUInteger pixelRange = [SLColorArt pixelRangeForColorDetectionLevel:self.detectionLevel];
     NSUInteger scale = 256 / pixelRange;
     NSUInteger rawImageColors[pixelRange][pixelRange][pixelRange];
     NSUInteger rawEdgeColors[pixelRange][pixelRange][pixelRange];
