@@ -57,7 +57,7 @@
 
 - (id)initWithImage:(UIImage*)image
 {
-    self = [self initWithImage:image threshold:2 detectionLevel:ColorDetectionLevelStandard];
+    self = [self initWithImage:image threshold:2 detectionLevel:ColorDetectionLevelHigh];
     if (self) {
 
     }
